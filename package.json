@@ -1,0 +1,30 @@
+{
+  "name": "fieldnotes-microfrontend",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=20.11.1"
+  },
+  "scripts": {
+    "dev": "node scripts/dev.mjs",
+    "build": "node scripts/build.mjs",
+    "preview": "vite preview --host 127.0.0.1 --port 5100 --strictPort",
+    "test": "node --test --test-reporter=tap tests/*.test.mjs",
+    "test:e2e": "playwright test",
+    "check:dates": "node scripts/check-dates.mjs"
+  },
+  "dependencies": {
+    "@builder.io/qwik": "1.5.1",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "svelte": "4.2.12",
+    "vue": "3.4.21"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.42.1",
+    "@sveltejs/vite-plugin-svelte": "3.0.2",
+    "@vitejs/plugin-react": "4.2.1",
+    "@vitejs/plugin-vue": "5.0.4",
+    "vite": "5.1.6"
+  }
+}
