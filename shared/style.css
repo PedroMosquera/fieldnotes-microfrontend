@@ -1,0 +1,52 @@
+* { box-sizing: border-box; }
+:root { font-family: Arial, Helvetica, sans-serif; color: #202b29; font-size: 16px; font-synthesis: none; }
+body { margin: 0; background: #fff; }
+button, input { font: inherit; }
+button { cursor: pointer; border: 1px solid #d5deda; background: white; color: inherit; padding: 10px 14px; border-radius: 6px; }
+button:hover { background: #edf3ef; }
+button:disabled { cursor: not-allowed; opacity: .45; }
+:focus-visible { outline: 3px solid #387d68; outline-offset: 3px; }
+h2 { font-size: 1rem; margin: 0; }
+p { line-height: 1.55; }
+.muted { color: #64706b; font-size: .875rem; }
+.small { font-size: .8125rem; }
+.primary { color: white; background: #244b3f; border-color: #244b3f; width: 100%; }
+.primary:hover { background: #17382e; }
+.catalog-tools { display: flex; justify-content: space-between; gap: 12px; margin-bottom: 22px; flex-wrap: wrap; }
+.tabs { display: flex; gap: 4px; }
+.tabs button { border: 0; font-size: .875rem; }
+.tabs button[aria-pressed="true"] { background: #243e35; color: white; }
+.catalog-tools input { min-width: 0; width: 190px; border: 1px solid #d5deda; border-radius: 6px; padding: 9px 12px; font-size: .875rem; }
+.products { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 26px 20px; }
+.product-art { height: 180px; display: grid; place-items: center; border-radius: 8px; overflow: hidden; }
+.product-heading { display: flex; justify-content: space-between; gap: 10px; margin-top: 15px; align-items: baseline; }
+.product-heading h2, .product-heading strong { font-size: .875rem; }
+.product p { margin: 8px 0 14px; }
+.add { width: 100%; display: flex; justify-content: space-between; font-size: .875rem; }
+.object { position: relative; filter: drop-shadow(12px 15px 8px #0002); }
+.book { width: 88px; height: 122px; background: #f9f4dd; border-radius: 3px 9px 9px 3px; border-left: 7px solid #244b3f; transform: rotate(-13deg); }
+.book:after { content: ''; position: absolute; top: 32px; left: 20px; width: 35px; height: 30px; border-top: 2px solid #a9a489; border-bottom: 2px solid #a9a489; }
+.lamp { width: 90px; height: 50px; background: #edf2db; border-radius: 70px 70px 5px 5px; margin-top: -50px; }
+.lamp:before { content: ''; position: absolute; width: 7px; height: 70px; background: #30483f; top: 48px; left: 42px; }
+.lamp:after { content: ''; position: absolute; width: 70px; height: 9px; background: #30483f; top: 114px; left: 10px; border-radius: 50%; }
+.cup { width: 80px; height: 85px; background: #eed6bc; border-radius: 8px 8px 24px 24px; border-top: 8px solid #b89574; transform: rotate(-8deg); }
+.cup:after { content: ''; position: absolute; width: 30px; height: 38px; border: 9px solid #eed6bc; border-left: 0; right: -27px; top: 10px; border-radius: 0 25px 25px 0; }
+.pencils { width: 12px; height: 120px; background: #ecbd68; transform: rotate(27deg); box-shadow: 23px 8px #d9e0cf, -23px -8px #344c45; }
+.empty { padding: 18px 0; color: #64706b; }
+.basket-items { list-style: none; margin: 0; padding: 0; }
+.basket-items li { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e8ece9; padding: 14px 0; gap: 12px; font-size: .875rem; }
+.basket-items p { margin: 7px 0; }
+.quantity { display: flex; align-items: center; gap: 9px; }
+.quantity button { padding: 4px 8px; }
+.total { display: flex; justify-content: space-between; padding: 12px 0; font-size: .875rem; }
+.grand { border-top: 1px solid #dce3df; font-size: 1.1rem; margin: 3px 0 15px; }
+.delivery { display: flex; align-items: center; gap: 10px; border: 1px solid #dce3df; border-radius: 6px; padding: 16px 12px; margin: 10px 0; font-size: .875rem; cursor: pointer; }
+.delivery:has(input:checked) { border-color: #426753; background: #f2f6f2; }
+.delivery input { accent-color: #244b3f; }
+.delivery span { flex: 1; }
+.delivery small { display: block; color: #64706b; margin-top: 6px; }
+.pick-title { font: 1.75rem Georgia, serif; }
+.pick-actions { display: flex; gap: 12px; align-items: center; }
+.pick-actions .primary { width: auto; }
+.text-button { border: 0; text-decoration: underline; font-size: .875rem; }
+@media(max-width:400px) { .products { gap: 20px 12px; } .product-art { height: 150px; } .product-heading { flex-direction: column; gap: 5px; } }
