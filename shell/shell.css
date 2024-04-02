@@ -1,0 +1,35 @@
+.site-header { min-height: 90px; border-bottom: 1px solid #dfe6e1; display: flex; justify-content: space-between; align-items: center; gap: 20px; padding: 20px 4%; }
+.brand { display: flex; align-items: center; gap: 9px; font: bold 1.7rem Georgia,serif; text-decoration: none; color: #244b3f; }
+.brand svg { width: 32px; height: 32px; }
+#toggle-admin { font-size: .875rem; }
+.page-layout { display: grid; grid-template-columns: minmax(0,1fr) 320px; }
+.page-layout.admin-hidden { grid-template-columns: 1fr; }
+.store { padding: 42px 4vw 0; min-width: 0; max-width: 1500px; margin: auto; width: 100%; }
+.intro { padding-bottom: 35px; border-bottom: 1px solid #dfe6e1; margin-bottom: 28px; }
+h1 { font: normal clamp(2rem,3.4vw,3.5rem)/1.1 Georgia,serif; letter-spacing: -.035em; margin: 20px 0; }
+.intro>p { color: #64706b; font-size: 1rem; }
+.store-grid { display: grid; grid-template-columns: minmax(0,1.65fr) minmax(250px,1fr); gap: 30px; }
+.collection, .checkout-column { min-width: 0; }
+.island { margin-bottom: 30px; }
+.island-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 22px; }
+.island-heading>h2 { font-size: 1.1rem; }
+iframe { border: 0; width: 100%; display: block; }
+.recommendation { border-top: 1px solid #dfe6e1; padding-top: 24px; }
+footer { border-top: 1px solid #dfe6e1; padding: 22px 0; display: flex; justify-content: space-between; gap: 10px; font-size: .75rem; color: #64706b; flex-wrap: wrap; }
+.admin { background: #f3f6f3; border-left: 1px solid #dfe6e1; padding: 30px 22px; min-width: 0; }
+.admin[hidden] { display: none; }
+.admin>h2 { font: 1.8rem Georgia,serif; margin-top: 20px; }
+.admin-description { color: #657168; font-size: .875rem; }
+.overview { display: grid; grid-template-columns: 1fr 1fr; border: 1px solid #d8e1d9; border-radius: 8px; margin: 25px 0; background: white; }
+.overview>div { padding: 18px 14px; }.overview>div+div { border-left: 1px solid #d8e1d9; }
+.overview strong { display: block; font-size: 1.5rem; margin-bottom: 6px; }.overview span { font-size: .75rem; color: #64706b; }
+.admin-label { display: flex; justify-content: space-between; align-items: center; margin: 22px 0 12px; }.admin-label h3 { font-size: .875rem; margin: 0; }.admin-label button { border: 0; background: none; text-decoration: underline; font-size: .75rem; padding: 5px 0; }
+.app-control { border: 1px solid #d8e1d9; background: white; padding: 14px; border-radius: 8px; margin-bottom: 10px; }
+.control-heading { display: flex; justify-content: space-between; font-size: .875rem; }.app-status { font-size: .75rem; color: #64706b; }.app-status[data-status="healthy"] { color: #326844; }.app-status[data-status="failed"] { color: #b2382a; }
+.app-control p { font-size: .75rem; color: #64706b; margin: 6px 0 15px; }.render-row { display: flex; justify-content: space-between; font-size: .75rem; margin-bottom: 12px; }.count { font-family: monospace; }.control-actions { display: flex; gap: 5px; }.control-actions button { font-size: .75rem; padding: 7px 9px; flex: 1; }.control-actions [data-action="crash"] { color: #a04335; }
+#activity { list-style: none; padding: 0; margin: 0; max-height: 230px; overflow: auto; }#activity li { display: flex; align-items: baseline; gap: 10px; font-size: .75rem; padding: 8px 0; border-bottom: 1px solid #dfe6e1; line-height: 1.4; }#activity time { color: #64706b; font-family: monospace; font-size: .6875rem; }.admin-note { color: #64706b; font-size: .75rem; margin-top: 20px; }
+.failure { background: #fff4ef; border: 1px dashed #d7a18d; border-radius: 8px; padding: 28px 20px; }.failure h3 { margin-top: 0; }.failure p { color: #865947; font-size: .875rem; }
+@media(min-width:1600px) { .store { padding-left: 65px; padding-right: 65px; }.product-art { height: 240px; } }
+@media(max-width:1150px) { .store-grid { grid-template-columns: 1fr; }.checkout-column { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; } }
+@media(max-width:850px) { .page-layout { grid-template-columns: 1fr; }.admin { border-left: 0; border-top: 1px solid #dfe6e1; }#app-controls { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }.store { padding: 28px 24px 0; } }
+@media(max-width:520px) { .checkout-column { display: block; }#app-controls { display: block; }.store { padding-left: 18px; padding-right: 18px; }.brand { font-size: 1.4rem; }.site-header { padding: 16px; }#toggle-admin { font-size: .75rem; padding: 9px; } }
