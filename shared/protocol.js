@@ -13,3 +13,16 @@ export const subscriptions = {
   qwik: ['favorites', 'viewed', 'cart', 'tokens'],
 };
 
+export function validPayload(type, data) {
+  if (!data || typeof data !== 'object' || Array.isArray(data)) return false;
+  if (['add', 'remove', 'favorite', 'view', 'compare', 'reorder'].includes(type)) return typeof data.id === 'string' && data.id.length <= 80;
+  if (type === 'shipping') return [0, 500].includes(data.amount);
+  if (type === 'theme') return ['forest', 'ocean', 'plum'].includes(data.value);
+  if (type === 'density') return ['comfortable', 'compact'].includes(data.value);
+  if (type === 'coupon') return typeof data.code === 'string' && data.code.length <= 30;
+  if (type === 'resize') return Number.isFinite(data.height) && data.height >= 0 && data.height <= 10000;
+  if (type === 'error') return typeof data.message === 'string' && data.message.length <= 500;
+  if (type === 'snapshot-applied') return Number.isInteger(data.revision) && data.revision >= 0;
+  return ['ready', 'render', 'clear', 'checkout', 'heartbeat', 'request-state'].includes(type);
+}
+
