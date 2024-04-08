@@ -26,3 +26,7 @@ export function validPayload(type, data) {
   return ['ready', 'render', 'clear', 'checkout', 'heartbeat', 'request-state'].includes(type);
 }
 
+export function envelope(source, type, payload = {}, id = globalThis.crypto.randomUUID()) {
+  return { ...payload, channel: CHANNEL, version: 2, source, type, messageId: id };
+}
+
