@@ -30,3 +30,10 @@ export function envelope(source, type, payload = {}, id = globalThis.crypto.rand
   return { ...payload, channel: CHANNEL, version: 2, source, type, messageId: id };
 }
 
+export function validEnvelope(data) {
+  return Boolean(data && data.channel === CHANNEL && data.version === 2
+    && APPS.includes(data.source) && typeof data.messageId === 'string'
+    && data.messageId.length > 0 && data.messageId.length <= 100
+    && validPayload(data.type, data));
+}
+
