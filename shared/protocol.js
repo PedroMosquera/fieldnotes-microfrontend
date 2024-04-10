@@ -37,3 +37,8 @@ export function validEnvelope(data) {
     && validPayload(data.type, data));
 }
 
+export function authorized(source, type) {
+  return APPS.includes(source) && (capabilities[source].includes(type)
+    || ['ready', 'render', 'resize', 'error', 'heartbeat', 'request-state', 'snapshot-applied'].includes(type));
+}
+
