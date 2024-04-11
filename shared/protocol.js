@@ -42,3 +42,16 @@ export function authorized(source, type) {
     || ['ready', 'render', 'resize', 'error', 'heartbeat', 'request-state', 'snapshot-applied'].includes(type));
 }
 
+export function createDeduper(limit = 500) {
+  const seen = new Set();
+  return {
+    accept(id) {
+      if (seen.has(id)) return false;
+      seen.add(id);
+      if (seen.size > limit) seen.delete(seen.values().next().value);
+      return true;
+    },
+    clear() { seen.clear(); },
+  };
+}
+
