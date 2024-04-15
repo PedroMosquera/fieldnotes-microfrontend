@@ -55,3 +55,8 @@ export function createDeduper(limit = 500) {
   };
 }
 
+export function trustedSender(event, frame, origin, name) {
+  return Boolean(frame && event.source === frame && event.origin === origin
+    && event.data?.source === name && validEnvelope(event.data));
+}
+
