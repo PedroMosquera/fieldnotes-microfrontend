@@ -60,3 +60,7 @@ export function trustedSender(event, frame, origin, name) {
     && event.data?.source === name && validEnvelope(event.data));
 }
 
+export function projectState(state, name) {
+  return Object.fromEntries(['revision', ...(subscriptions[name] || [])].map(key => [key, structuredClone(state[key])]));
+}
+
