@@ -64,3 +64,7 @@ export function projectState(state, name) {
   return Object.fromEntries(['revision', ...(subscriptions[name] || [])].map(key => [key, structuredClone(state[key])]));
 }
 
+export function commandKey(message) {
+  return `${message.source}:${message.messageId}`;
+}
+
