@@ -4,3 +4,8 @@ export function initialState() {
   return { revision: 0, cart: {}, shipping: 0, favorites: [], compared: [], viewed: [], coupon: '', orders: [], tokens: { theme: 'forest', density: 'comfortable' } };
 }
 
+export function cleanCart(value) {
+  return Object.fromEntries(products.filter(product => Number.isInteger(value?.[product.id]) && value[product.id] > 0)
+    .map(product => [product.id, Math.min(99, value[product.id])]));
+}
+
