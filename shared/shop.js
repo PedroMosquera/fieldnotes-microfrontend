@@ -9,3 +9,7 @@ export function cleanCart(value) {
     .map(product => [product.id, Math.min(99, value[product.id])]));
 }
 
+export function cleanIds(value, limit = 20) {
+  return Array.isArray(value) ? [...new Set(value.filter(id => products.some(product => product.id === id)))].slice(0, limit) : [];
+}
+
