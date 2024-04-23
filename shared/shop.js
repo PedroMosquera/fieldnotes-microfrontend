@@ -13,3 +13,10 @@ export function cleanIds(value, limit = 20) {
   return Array.isArray(value) ? [...new Set(value.filter(id => products.some(product => product.id === id)))].slice(0, limit) : [];
 }
 
+export function totals(state) {
+  const subtotal = cartTotal(state.cart);
+  const discount = state.coupon === 'STUDIO10' ? Math.round(subtotal / 10) : 0;
+  const delivery = subtotal ? state.shipping : 0;
+  return { subtotal, discount, delivery, total: subtotal - discount + delivery };
+}
+
