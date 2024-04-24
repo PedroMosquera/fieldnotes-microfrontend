@@ -20,3 +20,17 @@ export function totals(state) {
   return { subtotal, discount, delivery, total: subtotal - discount + delivery };
 }
 
+export function restoreState(value) {
+  const state = initialState();
+  if (!value || typeof value !== 'object') return state;
+  state.cart = cleanCart(value.cart);
+  state.favorites = cleanIds(value.favorites);
+  state.compared = cleanIds(value.compared, 3);
+  state.viewed = cleanIds(value.viewed, 8);
+  state.shipping = value.shipping === 500 ? 500 : 0;
+  state.coupon = value.coupon === 'STUDIO10' ? 'STUDIO10' : '';
+  if (['forest', 'ocean', 'plum'].includes(value.tokens?.theme)) state.tokens.theme = value.tokens.theme;
+  if (value.tokens?.density === 'compact') state.tokens.density = 'compact';
+  return state;
+}
+
