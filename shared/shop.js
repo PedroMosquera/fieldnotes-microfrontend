@@ -34,3 +34,8 @@ export function restoreState(value) {
   return state;
 }
 
+export function toggleId(ids, id, limit = 20) {
+  if (ids.includes(id)) return ids.filter(value => value !== id);
+  return ids.length < limit ? [...ids, id] : ids;
+}
+
