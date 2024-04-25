@@ -39,3 +39,17 @@ export function toggleId(ids, id, limit = 20) {
   return ids.length < limit ? [...ids, id] : ids;
 }
 
+export function reduceShop(state, action) {
+  let next = state;
+  const known = products.some(product => product.id === action.id);
+  if (['add', 'remove', 'clear'].includes(action.type)) next = { ...state, cart: reduceCart(state.cart, action) };
+  if (action.type === 'favorite' && known) next = { ...state, favorites: toggleId(state.favorites, action.id) };
+  if (action.type === 'compare' && known) next = { ...state, compared: toggleId(state.compared, action.id, 3) };
+  if (action.type === 'view' && known) next = { ...state, viewed: [action.id, ...state.viewed.filter(id => id !== action.id)].slice(0, 8) };
+  if (action.type === 'shipping' && [0, 500].includes(action.amount)) next = { ...state, shipping: action.amount };
+  if (action.type === 'coupon' && ['', 'STUDIO10'].includes(action.code.trim().toUpperCase())) next = { ...state, coupon: action.code.trim().toUpperCase() };
+  if (action.type === 'theme' && ['forest', 'ocean', 'plum'].includes(action.value)) next = { ...state, tokens: { ...state.tokens, theme: action.value } };
+  if (action.type === 'density' && ['comfortable', 'compact'].includes(action.value)) next = { ...state, tokens: { ...state.tokens, density: action.value } };
+  return JSON.stringify(next) === JSON.stringify(state) ? state : { ...next, revision: state.revision + 1 };
+}
+
