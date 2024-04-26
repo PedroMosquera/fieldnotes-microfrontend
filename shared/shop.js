@@ -53,3 +53,9 @@ export function reduceShop(state, action) {
   return JSON.stringify(next) === JSON.stringify(state) ? state : { ...next, revision: state.revision + 1 };
 }
 
+export function placeOrder(state, id, timestamp) {
+  if (!Object.keys(state.cart).length) return state;
+  const order = { id, timestamp, cart: { ...state.cart }, ...totals(state) };
+  return { ...state, cart: {}, coupon: '', orders: [order, ...state.orders].slice(0, 10), revision: state.revision + 1 };
+}
+
