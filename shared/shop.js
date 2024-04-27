@@ -59,3 +59,8 @@ export function placeOrder(state, id, timestamp) {
   return { ...state, cart: {}, coupon: '', orders: [order, ...state.orders].slice(0, 10), revision: state.revision + 1 };
 }
 
+export function reorder(state, id) {
+  const order = state.orders.find(item => item.id === id);
+  return order ? { ...state, cart: cleanCart(order.cart), revision: state.revision + 1 } : state;
+}
+
