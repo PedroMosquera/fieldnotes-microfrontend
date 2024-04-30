@@ -64,3 +64,18 @@ export function reorder(state, id) {
   return order ? { ...state, cart: cleanCart(order.cart), revision: state.revision + 1 } : state;
 }
 
+export function createStore(seed = initialState()) {
+  let state = structuredClone(seed);
+  const subscribers = new Set();
+  return {
+    get: () => structuredClone(state),
+    update(next) {
+      if (JSON.stringify(next) === JSON.stringify(state)) return false;
+      state = structuredClone(next);
+      subscribers.forEach(listener => listener(structuredClone(state)));
+      return true;
+    },
+    subscribe(listener) { subscribers.add(listener); return () => subscribers.delete(listener); },
+  };
+}
+
