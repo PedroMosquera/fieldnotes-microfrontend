@@ -79,3 +79,7 @@ export function createStore(seed = initialState()) {
   };
 }
 
+export function changedSlices(previous, next) {
+  return Object.keys(next).filter(key => key !== 'revision' && JSON.stringify(previous[key]) !== JSON.stringify(next[key]));
+}
+
