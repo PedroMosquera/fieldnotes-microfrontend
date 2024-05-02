@@ -83,3 +83,7 @@ export function changedSlices(previous, next) {
   return Object.keys(next).filter(key => key !== 'revision' && JSON.stringify(previous[key]) !== JSON.stringify(next[key]));
 }
 
+export function acceptRevision(current, incoming) {
+  return Number.isInteger(incoming) && incoming >= 0 && incoming >= current;
+}
+
