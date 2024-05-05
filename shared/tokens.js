@@ -4,3 +4,9 @@ export const themes = {
   plum: { accent: '#65375f', hover: '#492445', surface: '#ffffff', text: '#362235', muted: '#73596c', soft: '#f5edf4' },
 };
 
+export function resolveTokens(preferences) {
+  const colors = themes[preferences?.theme] || themes.forest;
+  const compact = preferences?.density === 'compact';
+  return { ...colors, gap: compact ? '12px' : '20px', control: compact ? '7px 10px' : '10px 14px', radius: compact ? '4px' : '8px' };
+}
+
