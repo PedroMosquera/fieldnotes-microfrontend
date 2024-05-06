@@ -10,3 +10,9 @@ export function resolveTokens(preferences) {
   return { ...colors, gap: compact ? '12px' : '20px', control: compact ? '7px 10px' : '10px 14px', radius: compact ? '4px' : '8px' };
 }
 
+export function applyTokens(element, preferences) {
+  for (const [name, value] of Object.entries(resolveTokens(preferences))) element.style.setProperty(`--shop-${name}`, value);
+  element.dataset.theme = preferences?.theme || 'forest';
+  element.dataset.density = preferences?.density || 'comfortable';
+}
+
