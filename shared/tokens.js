@@ -16,3 +16,7 @@ export function applyTokens(element, preferences) {
   element.dataset.density = preferences?.density || 'comfortable';
 }
 
+export function tokenRows(preferences) {
+  return Object.entries(resolveTokens(preferences)).map(([name, value]) => ({ name: `--shop-${name}`, value }));
+}
+
