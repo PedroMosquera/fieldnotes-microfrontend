@@ -5,3 +5,11 @@ export function serializeState(state) {
   return JSON.stringify({ schema: 1, state: { cart, shipping, favorites, compared, viewed, coupon, tokens } });
 }
 
+export function deserializeState(raw) {
+  try {
+    const parsed = JSON.parse(raw);
+    if (parsed?.schema !== 1) return { state: restoreState(null), warning: 'Saved state schema is unsupported.' };
+    return { state: restoreState(parsed.state), warning: '' };
+  } catch { return { state: restoreState(null), warning: 'Saved state could not be read.' }; }
+}
+
