@@ -13,3 +13,10 @@ export function deserializeState(raw) {
   } catch { return { state: restoreState(null), warning: 'Saved state could not be read.' }; }
 }
 
+export function loadState(storage) {
+  try {
+    const raw = storage.getItem(STORAGE_KEY);
+    return raw ? deserializeState(raw) : { state: restoreState(null), warning: '' };
+  } catch { return { state: restoreState(null), warning: 'Browser storage is unavailable.' }; }
+}
+
