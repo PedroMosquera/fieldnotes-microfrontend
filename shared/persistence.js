@@ -25,3 +25,8 @@ export function saveState(storage, state) {
   catch { return 'State is in memory only; browser storage rejected the write.'; }
 }
 
+export function clearSavedState(storage) {
+  try { storage.removeItem(STORAGE_KEY); return ''; }
+  catch { return 'Saved state could not be cleared.'; }
+}
+
