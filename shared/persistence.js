@@ -20,3 +20,8 @@ export function loadState(storage) {
   } catch { return { state: restoreState(null), warning: 'Browser storage is unavailable.' }; }
 }
 
+export function saveState(storage, state) {
+  try { storage.setItem(STORAGE_KEY, serializeState(state)); return ''; }
+  catch { return 'State is in memory only; browser storage rejected the write.'; }
+}
+
