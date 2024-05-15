@@ -20,3 +20,7 @@ export function deliveryPlan(fault, message) {
   return [{ message, delay: 0 }];
 }
 
+export function retryDelay(attempt) {
+  return Math.min(4000, 500 * 2 ** Math.max(0, Math.min(3, attempt)));
+}
+
