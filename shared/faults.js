@@ -28,3 +28,7 @@ export function heartbeatStatus(lastSeen, now, threshold = 7000) {
   return now - lastSeen > threshold ? 'unresponsive' : 'responsive';
 }
 
+export function sameGeneration(expected, actual) {
+  return Number.isInteger(expected) && expected === actual;
+}
+
