@@ -24,3 +24,7 @@ export function retryDelay(attempt) {
   return Math.min(4000, 500 * 2 ** Math.max(0, Math.min(3, attempt)));
 }
 
+export function heartbeatStatus(lastSeen, now, threshold = 7000) {
+  return now - lastSeen > threshold ? 'unresponsive' : 'responsive';
+}
+
