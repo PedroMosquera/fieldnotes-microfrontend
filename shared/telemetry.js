@@ -7,3 +7,9 @@ export function createTrace(limit = 160) {
   };
 }
 
+export function filterTrace(records, source = 'all', search = '') {
+  const query = search.toLowerCase();
+  return records.filter(record => (source === 'all' || record.source === source)
+    && `${record.type} ${record.detail || ''}`.toLowerCase().includes(query));
+}
+
