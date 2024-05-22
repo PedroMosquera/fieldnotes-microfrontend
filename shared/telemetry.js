@@ -13,3 +13,9 @@ export function filterTrace(records, source = 'all', search = '') {
     && `${record.type} ${record.detail || ''}`.toLowerCase().includes(query));
 }
 
+export function traceSummary(records) {
+  return { total: records.length, rejected: records.filter(row => row.type === 'rejected').length,
+    renders: records.filter(row => row.type === 'render').length,
+    snapshots: records.filter(row => row.type === 'state').length };
+}
+
