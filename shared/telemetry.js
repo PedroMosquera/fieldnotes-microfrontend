@@ -19,3 +19,7 @@ export function traceSummary(records) {
     snapshots: records.filter(row => row.type === 'state').length };
 }
 
+export function revisionLag(shellRevision, childRevision) {
+  return Math.max(0, shellRevision - Math.max(0, childRevision));
+}
+
