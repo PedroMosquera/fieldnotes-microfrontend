@@ -23,3 +23,7 @@ export function revisionLag(shellRevision, childRevision) {
   return Math.max(0, shellRevision - Math.max(0, childRevision));
 }
 
+export function renderDelta(current, baseline) {
+  return Object.fromEntries(Object.entries(current).map(([name, count]) => [name, Math.max(0, count - (baseline[name] || 0))]));
+}
+
