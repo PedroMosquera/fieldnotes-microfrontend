@@ -27,3 +27,7 @@ export function renderDelta(current, baseline) {
   return Object.fromEntries(Object.entries(current).map(([name, count]) => [name, Math.max(0, count - (baseline[name] || 0))]));
 }
 
+export function exportTrace(records, state) {
+  return JSON.stringify({ schema: 1, revision: state.revision, events: records }, null, 2);
+}
+
