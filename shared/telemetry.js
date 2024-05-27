@@ -31,3 +31,7 @@ export function exportTrace(records, state) {
   return JSON.stringify({ schema: 1, revision: state.revision, events: records }, null, 2);
 }
 
+export function readyDuration(started, ready) {
+  return Math.max(0, Math.round(ready - started));
+}
+
