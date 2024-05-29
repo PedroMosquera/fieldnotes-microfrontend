@@ -9,3 +9,11 @@ export function filterProducts(products, { query = '', category = 'All', favorit
     && normalizeSearch(`${product.name} ${product.detail}`).includes(search));
 }
 
+export function sortProducts(products, sort = 'featured') {
+  const list = [...products];
+  if (sort === 'price-low') list.sort((a, b) => a.price - b.price);
+  if (sort === 'price-high') list.sort((a, b) => b.price - a.price);
+  if (sort === 'name') list.sort((a, b) => a.name.localeCompare(b.name));
+  return list;
+}
+
