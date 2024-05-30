@@ -17,3 +17,7 @@ export function sortProducts(products, sort = 'featured') {
   return list;
 }
 
+export function comparedProducts(products, ids) {
+  return ids.map(id => products.find(product => product.id === id)).filter(Boolean);
+}
+
