@@ -21,3 +21,11 @@ export function comparedProducts(products, ids) {
   return ids.map(id => products.find(product => product.id === id)).filter(Boolean);
 }
 
+export function recommend(products, viewed, cart) {
+  const recent = products.find(product => product.id === viewed[0]);
+  return [...products].sort((a, b) => {
+    const score = product => (product.category === recent?.category ? 2 : 0) - (cart[product.id] ? 4 : 0) - (product.id === recent?.id ? 1 : 0);
+    return score(b) - score(a);
+  });
+}
+
