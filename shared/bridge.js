@@ -35,5 +35,16 @@ function receive(event) {
     setTimeout(() => { throw new Error('Simulated microfrontend failure'); });
     return;
   }
+  if (data.type === 'state') {
+    if (!acceptRevision(revision, data.revision)) {
+      send('snapshot-ignored', { revision: data.revision });
+      return;
+    }
+    revision = data.revision;
+    if (data.tokens) applyTokens(document.documentElement, data.tokens);
+    listeners.forEach(callback => callback(data));
+    send('snapshot-applied', { revision });
+    return;
+  }
   listeners.forEach(callback => callback(data));
 }
