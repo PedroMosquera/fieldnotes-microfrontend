@@ -27,6 +27,15 @@ export function bootstrap() {
   window.addEventListener('message', receive);
   const observer = new ResizeObserver(() => send('resize', { height: document.body.scrollHeight }));
   observer.observe(document.body);
+  const heartbeat = setInterval(() => send('heartbeat'), 2000);
+  window.addEventListener('pagehide', () => {
+    clearInterval(heartbeat);
+    observer.disconnect();
+    pending.forEach(entry => clearTimeout(entry.timer));
+    pending.clear();
+    window.removeEventListener('message', receive);
+    listeners.clear();
+  }, { once: true });
 }
 function receive(event) {
   const data = event.data;
