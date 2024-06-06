@@ -16,6 +16,11 @@ export function listen(callback) {
 export function send(type, payload = {}) {
   const message = envelope(source, type, payload);
   post(message);
+  if (capabilities[source]?.includes(type)) {
+    const entry = { message, attempt: 0, timer: null };
+    pending.set(message.messageId, entry);
+    scheduleRetry(entry);
+  }
   return message.messageId;
 }
 export function rendered() { send('render'); }
