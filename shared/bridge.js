@@ -62,3 +62,17 @@ function receive(event) {
   }
   listeners.forEach(callback => callback(data));
 }
+
+function scheduleRetry(entry) {
+  entry.timer = setTimeout(() => {
+    if (!pending.has(entry.message.messageId)) return;
+    if (entry.attempt >= 2) {
+      pending.delete(entry.message.messageId);
+      listeners.forEach(callback => callback({ type: 'notice', message: 'Command acknowledgement timed out. The action may already have applied; inspect the shell state before retrying.' }));
+      return;
+    }
+    entry.attempt++;
+    post(entry.message);
+    scheduleRetry(entry);
+  }, retryDelay(entry.attempt));
+}
