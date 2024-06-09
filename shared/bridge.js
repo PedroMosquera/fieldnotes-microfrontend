@@ -45,6 +45,14 @@ export function bootstrap() {
 function receive(event) {
   const data = event.data;
   if (event.origin !== location.origin || event.source !== parent || data?.channel !== CHANNEL || data.version !== 2) return;
+  if (data.type === 'ack') {
+    const entry = pending.get(data.replyTo);
+    if (entry) clearTimeout(entry.timer);
+    pending.delete(data.replyTo);
+    if (data.error) listeners.forEach(callback => callback({ type: 'notice', message: data.error }));
+    return;
+  }
+  if (data.type === 'duplicate-command') { duplicateNext = true; return; }
   if (data.type === 'crash') {
     setTimeout(() => { throw new Error('Simulated microfrontend failure'); });
     return;
