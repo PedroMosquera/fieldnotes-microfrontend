@@ -16,6 +16,10 @@ export function listen(callback) {
 export function send(type, payload = {}) {
   const message = envelope(source, type, payload);
   post(message);
+  if (duplicateNext && capabilities[source]?.includes(type)) {
+    post(message);
+    duplicateNext = false;
+  }
   if (capabilities[source]?.includes(type)) {
     const entry = { message, attempt: 0, timer: null };
     pending.set(message.messageId, entry);
