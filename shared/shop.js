@@ -84,6 +84,6 @@ export function changedSlices(previous, next) {
 }
 
 export function acceptRevision(current, incoming) {
-  return Number.isInteger(incoming) && incoming >= 0 && incoming >= current;
+  return Number.isInteger(incoming) && incoming >= 0 && incoming > current;
 }
 

@@ -22,7 +22,7 @@ export function validPayload(type, data) {
   if (type === 'coupon') return typeof data.code === 'string' && data.code.length <= 30;
   if (type === 'resize') return Number.isFinite(data.height) && data.height >= 0 && data.height <= 10000;
   if (type === 'error') return typeof data.message === 'string' && data.message.length <= 500;
-  if (type === 'snapshot-applied') return Number.isInteger(data.revision) && data.revision >= 0;
+  if (['snapshot-applied', 'snapshot-ignored'].includes(type)) return Number.isInteger(data.revision) && data.revision >= 0;
   return ['ready', 'render', 'clear', 'checkout', 'heartbeat', 'request-state'].includes(type);
 }
 
@@ -39,7 +39,7 @@ export function validEnvelope(data) {
 
 export function authorized(source, type) {
   return APPS.includes(source) && (capabilities[source].includes(type)
-    || ['ready', 'render', 'resize', 'error', 'heartbeat', 'request-state', 'snapshot-applied'].includes(type));
+    || ['ready', 'render', 'resize', 'error', 'heartbeat', 'request-state', 'snapshot-applied', 'snapshot-ignored'].includes(type));
 }
 
 export function createDeduper(limit = 500) {
