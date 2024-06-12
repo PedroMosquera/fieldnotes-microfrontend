@@ -3,15 +3,24 @@ import { createRoot } from 'react-dom/client';
 import { products, money } from '../../shared/catalog.js';
 import { bootstrap, listen, send, rendered } from '../../shared/bridge.js';
 import '../../shared/style.css';
+import { filterProducts, sortProducts, comparedProducts } from '../../shared/catalog-tools.js';
 
 bootstrap();
 function Catalog() {
   const [category, setCategory] = useState('All');
   const [query, setQuery] = useState('');
   const [pulse, setPulse] = useState(0);
+  const [shared, setShared] = useState({ cart: {}, favorites: [], compared: [] });
+  const [sort, setSort] = useState('featured');
+  const [favoritesOnly, setFavoritesOnly] = useState(false);
+  const [notice, setNotice] = useState('');
   useEffect(() => { rendered(); });
   useEffect(() => {
-    const cleanup = listen(message => { if (message.type === 'refresh') setPulse(value => value + 1); });
+    const cleanup = listen(message => {
+      if (message.type === 'refresh') setPulse(value => value + 1);
+      if (message.type === 'state') setShared(message);
+      if (message.type === 'notice') setNotice(message.message);
+    });
     send('ready');
     return cleanup;
   }, []);
