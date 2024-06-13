@@ -24,13 +24,17 @@ function Catalog() {
     send('ready');
     return cleanup;
   }, []);
-  const visible = products.filter(product => (category === 'All' || product.category === category)
-    && product.name.toLowerCase().includes(query.toLowerCase()));
+  const visible = sortProducts(filterProducts(products, { category, query, favoritesOnly, favorites: shared.favorites }), sort);
+  const comparison = comparedProducts(products, shared.compared);
   return <main data-pulse={pulse}>
     <div className="catalog-tools"><div className="tabs" aria-label="Product category">
       {['All', 'Paper', 'Objects'].map(value => <button key={value} aria-pressed={category === value} onClick={() => setCategory(value)}>{value}</button>)}
     </div><input aria-label="Search products" placeholder="Search the collection" value={query} onChange={event => setQuery(event.target.value)} /></div>
-    <div className="products">{visible.map(product => <article className="product" key={product.id}>
+    <div className="catalog-tools">
+      <label>Sort <select value={sort} onChange={event => setSort(event.target.value)}><option value="featured">Featured</option><option value="price-low">Price: low first</option><option value="price-high">Price: high first</option><option value="name">Name</option></select></label>
+      <label><input type="checkbox" checked={favoritesOnly} onChange={event => setFavoritesOnly(event.target.checked)} /> Saved only</label>
+      <span className="muted">{visible.length} products</span>
+    </div><div className="products">{visible.map(product => <article className="product" key={product.id}>
       <div className="product-art" style={{ background: product.color }} aria-hidden="true"><div className={`object ${product.shape}`} /></div>
       <div className="product-heading"><h2>{product.name}</h2><strong>{money(product.price)}</strong></div>
       <p className="muted">{product.detail}</p>
