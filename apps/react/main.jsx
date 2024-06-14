@@ -38,6 +38,9 @@ function Catalog() {
       <div className="product-art" style={{ background: product.color }} aria-hidden="true"><div className={`object ${product.shape}`} /></div>
       <div className="product-heading"><h2>{product.name}</h2><strong>{money(product.price)}</strong></div>
       <p className="muted">{product.detail}</p>
+      <div className="product-actions"><button aria-pressed={shared.favorites.includes(product.id)} onClick={() => send('favorite', { id: product.id })}>{shared.favorites.includes(product.id) ? 'Saved' : 'Save'}</button>
+      <button onClick={() => { send('view', { id: product.id }); setNotice(`${product.name}: ${product.detail}. Browsing activity sent to recommendations.`); }}>Details</button>
+      <button aria-pressed={shared.compared.includes(product.id)} disabled={shared.compared.length >= 3 && !shared.compared.includes(product.id)} onClick={() => send('compare', { id: product.id })}>Compare</button></div>
       <button className="add" onClick={() => send('add', { id: product.id })}>Add to basket<span aria-hidden="true">+</span></button>
     </article>)}</div>
     {!visible.length && <p className="empty">No products match. Try another search.</p>}
