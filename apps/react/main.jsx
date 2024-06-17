@@ -43,6 +43,8 @@ function Catalog() {
       <button aria-pressed={shared.compared.includes(product.id)} disabled={shared.compared.length >= 3 && !shared.compared.includes(product.id)} onClick={() => send('compare', { id: product.id })}>Compare</button></div>
       <button className="add" onClick={() => send('add', { id: product.id })}>Add to basket<span aria-hidden="true">+</span></button>
     </article>)}</div>
+    {comparison.length > 0 && <section className="comparison"><h2>Compare up to three</h2><table><thead><tr><th>Product</th><th>Category</th><th>Price</th></tr></thead><tbody>{comparison.map(product => <tr key={product.id}><td>{product.name}</td><td>{product.category}</td><td>{money(product.price)}</td></tr>)}</tbody></table></section>}
+    <p role="status" className="muted">{notice}</p>
     {!visible.length && <p className="empty">No products match. Try another search.</p>}
   </main>;
 }
