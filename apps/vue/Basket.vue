@@ -1,17 +1,22 @@
 <script setup>
 import { ref, computed, onMounted, onUpdated, onUnmounted } from 'vue';
 import { products, money } from '../../shared/catalog.js';
-import { cartTotal } from '../../shared/state.js';
+import { totals } from '../../shared/shop.js';
 import { listen, send, rendered } from '../../shared/bridge.js';
 const cart = ref({});
 const shipping = ref(0);
 const pulse = ref(0);
+const coupon = ref('');
+const code = ref('');
+const orders = ref([]);
 const confirmation = ref('');
 const items = computed(() => products.filter(product => cart.value[product.id]));
-const total = computed(() => cartTotal(cart.value) + (items.value.length ? shipping.value : 0));
+const amounts = computed(() => totals({ cart: cart.value, shipping: shipping.value, coupon: coupon.value }));
+const total = computed(() => amounts.value.total);
 const cleanup = listen(message => {
-  if (message.type === 'state') { cart.value = message.cart; shipping.value = message.shipping; }
+  if (message.type === 'state') { cart.value = message.cart; shipping.value = message.shipping; coupon.value = message.coupon; orders.value = message.orders; }
   if (message.type === 'refresh') pulse.value++;
+  if (message.type === 'notice') confirmation.value = message.message;
   if (message.type === 'ordered') confirmation.value = 'Demo order placed. Nothing has been charged.';
 });
 onMounted(() => { rendered(); send('ready'); });
