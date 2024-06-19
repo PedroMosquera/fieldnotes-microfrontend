@@ -40,6 +40,7 @@ onUnmounted(cleanup);
     <button class="primary" :disabled="!items.length" @click="send('checkout')">Place demo order</button>
     <button :disabled="!items.length" @click="send('clear')">Empty basket</button>
     <p class="muted small">Practice checkout. No payment details needed.</p>
+    <details v-if="orders.length"><summary>Demo orders ({{ orders.length }})</summary><ul class="order-list"><li v-for="order in orders" :key="order.id"><strong>{{ money(order.total) }}</strong><small>{{ new Date(order.timestamp).toLocaleString() }}</small><button @click="send('reorder', { id: order.id })">Reorder</button></li></ul></details>
     <p role="status">{{ confirmation }}</p>
   </main>
 </template>
