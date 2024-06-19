@@ -33,9 +33,12 @@ onUnmounted(cleanup);
         <div class="quantity"><button :aria-label="`Remove ${product.name}`" @click="send('remove', { id: product.id })">-</button><span>{{ cart[product.id] }}</span><button :aria-label="`Add ${product.name}`" @click="send('add', { id: product.id })">+</button></div>
       </li>
     </ul>
+    <form class="coupon" @submit.prevent="send('coupon', { code })"><label for="coupon">Demo discount code</label><input id="coupon" v-model="code" placeholder="STUDIO10" maxlength="30" /><button>Apply code</button></form>
+    <div v-if="coupon" class="total"><span>{{ coupon }} discount</span><span>-{{ money(amounts.discount) }}</span><button @click="send('coupon', { code: '' })">Remove code</button></div>
     <div class="total"><span>Delivery</span><span>{{ items.length && shipping ? money(shipping) : 'Free' }}</span></div>
     <div class="total grand"><span>Total</span><strong>{{ money(total) }}</strong></div>
     <button class="primary" :disabled="!items.length" @click="send('checkout')">Place demo order</button>
+    <button :disabled="!items.length" @click="send('clear')">Empty basket</button>
     <p class="muted small">Practice checkout. No payment details needed.</p>
     <p role="status">{{ confirmation }}</p>
   </main>
