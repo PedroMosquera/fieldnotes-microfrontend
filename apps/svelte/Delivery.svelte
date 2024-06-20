@@ -3,9 +3,19 @@
   import { listen, send, rendered } from '../../shared/bridge.js';
   let selected = 0;
   let pulse = 0;
+  let theme = 'forest';
+  let density = 'comfortable';
+  let itemCount = 0;
+  let notice = '';
   onMount(() => {
     const cleanup = listen(message => {
-      if (message.type === 'state') selected = message.shipping;
+      if (message.type === 'state') {
+        selected = message.shipping;
+        theme = message.tokens.theme;
+        density = message.tokens.density;
+        itemCount = Object.values(message.cart).reduce((sum, quantity) => sum + quantity, 0);
+      }
+      if (message.type === 'notice') notice = message.message;
       if (message.type === 'refresh') pulse++;
     });
     send('ready');
