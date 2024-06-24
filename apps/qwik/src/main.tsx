@@ -37,8 +37,11 @@ export const Recommendation = component$(() => {
   return <main data-pulse={pulse.value}>
     <h2 class="pick-title">{product.name}</h2>
     <p class="muted">{product.detail}.</p>
+    <p class="muted">{viewed.value.length ? 'Inspired by your browsing in the catalog.' : 'Browse product details to personalize these picks.'}</p>
+    <button aria-pressed={favorites.value.includes(product.id)} onClick$={() => send('favorite', { id: product.id })}>{favorites.value.includes(product.id) ? 'Saved' : 'Save product'}</button>
     <div class="pick-actions"><button class="primary" onClick$={() => send('add', { id: product.id })}>Add for {money(product.price)}</button>
     <button class="text-button" onClick$={() => { index.value = (index.value + 1) % products.length; }}>Next product</button></div>
+    <p role="status">{notice.value}</p>
   </main>;
 });
 
