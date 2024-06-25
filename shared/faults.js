@@ -3,7 +3,7 @@ export function defaultFault() {
 }
 
 export function configureFault(fault, mode, delay = 1200) {
-  const valid = ['normal', 'delay', 'drop', 'duplicate', 'reorder', 'pause'];
+  const valid = ['normal', 'delay', 'drop', 'duplicate', 'reorder', 'pause', 'ack-drop'];
   return { ...fault, mode: valid.includes(mode) ? mode : 'normal', delay: Math.max(0, Math.min(5000, Number(delay) || 0)), held: null };
 }
 

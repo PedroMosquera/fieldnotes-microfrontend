@@ -14,8 +14,6 @@ h1 { font: normal clamp(2rem,3.4vw,3.5rem)/1.1 Georgia,serif; letter-spacing: -.
 .island-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 22px; }
 .island-heading>h2 { font-size: 1.1rem; }
 iframe { border: 0; width: 100%; display: block; }
-.recommendation { border-top: 1px solid #dfe6e1; padding-top: 24px; }
-footer { border-top: 1px solid #dfe6e1; padding: 22px 0; display: flex; justify-content: space-between; gap: 10px; font-size: .75rem; color: #64706b; flex-wrap: wrap; }
 .admin { background: #f3f6f3; border-left: 1px solid #dfe6e1; padding: 30px 22px; min-width: 0; }
 .admin[hidden] { display: none; }
 .admin>h2 { font: 1.8rem Georgia,serif; margin-top: 20px; }
@@ -27,9 +25,20 @@ footer { border-top: 1px solid #dfe6e1; padding: 22px 0; display: flex; justify-
 .app-control { border: 1px solid #d8e1d9; background: white; padding: 14px; border-radius: 8px; margin-bottom: 10px; }
 .control-heading { display: flex; justify-content: space-between; font-size: .875rem; }.app-status { font-size: .75rem; color: #64706b; }.app-status[data-status="healthy"] { color: #326844; }.app-status[data-status="failed"] { color: #b2382a; }
 .app-control p { font-size: .75rem; color: #64706b; margin: 6px 0 15px; }.render-row { display: flex; justify-content: space-between; font-size: .75rem; margin-bottom: 12px; }.count { font-family: monospace; }.control-actions { display: flex; gap: 5px; }.control-actions button { font-size: .75rem; padding: 7px 9px; flex: 1; }.control-actions [data-action="crash"] { color: #a04335; }
-#activity { list-style: none; padding: 0; margin: 0; max-height: 230px; overflow: auto; }#activity li { display: flex; align-items: baseline; gap: 10px; font-size: .75rem; padding: 8px 0; border-bottom: 1px solid #dfe6e1; line-height: 1.4; }#activity time { color: #64706b; font-family: monospace; font-size: .6875rem; }.admin-note { color: #64706b; font-size: .75rem; margin-top: 20px; }
+#activity { list-style: none; padding: 0; margin: 0; max-height: 230px; overflow: auto; }#activity li { display: flex; align-items: baseline; gap: 10px; font-size: .75rem; padding: 8px 0; border-bottom: 1px solid #dfe6e1; line-height: 1.4; }#activity time { color: #64706b; font-family: monospace; font-size: .6875rem; }
 .failure { background: #fff4ef; border: 1px dashed #d7a18d; border-radius: 8px; padding: 28px 20px; }.failure h3 { margin-top: 0; }.failure p { color: #865947; font-size: .875rem; }
 @media(min-width:1600px) { .store { padding-left: 65px; padding-right: 65px; }.product-art { height: 240px; } }
 @media(max-width:1150px) { .store-grid { grid-template-columns: 1fr; }.checkout-column { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; } }
 @media(max-width:850px) { .page-layout { grid-template-columns: 1fr; }.admin { border-left: 0; border-top: 1px solid #dfe6e1; }#app-controls { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }.store { padding: 28px 24px 0; } }
 @media(max-width:520px) { .checkout-column { display: block; }#app-controls { display: block; }.store { padding-left: 18px; padding-right: 18px; }.brand { font-size: 1.4rem; }.site-header { padding: 16px; }#toggle-admin { font-size: .75rem; padding: 9px; } }
+
+.island[data-app] { position: relative; border: 2px solid var(--framework-color); border-radius: 6px; padding: 18px; }
+[data-app="react"] { --framework-color: #087ea4; --framework-glow: #61dafb66; }
+[data-app="vue"] { --framework-color: #28865a; --framework-glow: #42b88366; }
+[data-app="svelte"] { --framework-color: #d94000; --framework-glow: #ff3e0066; }
+[data-app="qwik"] { --framework-color: #7654b5; --framework-glow: #ac7ef466; }
+.island[data-app]::after { content: ''; position: absolute; inset: -5px; border: 3px solid var(--framework-color); border-radius: 9px; opacity: 0; pointer-events: none; transition: opacity 180ms ease-out; }
+.island[data-app].is-rendering::after { opacity: .7; box-shadow: 0 0 12px var(--framework-glow); transition: none; }
+.framework-name { color: var(--framework-color); font-size: .875rem; font-weight: 600; }
+.training>summary { font-size: 1rem; }
+@media(prefers-reduced-motion:reduce) { .island[data-app]::after { transition: none; } }
