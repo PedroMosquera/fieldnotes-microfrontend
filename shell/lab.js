@@ -37,3 +37,32 @@ export function createLab(api) {
   schedule();
   return { schedule };
 }
+
+function statePanel({ api, panels, notice }) {
+  const panel = panels.State.panel;
+  panel.innerHTML = `<div class="lab-actions"><button id="baseline">Reset counts</button><button id="reset-state">Reset shop</button></div><div class="table-scroll"><table><thead><tr><th>App</th><th>Applied</th><th>Target</th><th>Lag</th><th>Updates</th><th>Load time</th></tr></thead><tbody></tbody></table></div><details><summary>Shared state</summary><pre></pre></details>`;
+  let baseline = {};
+  panel.querySelector('#baseline').onclick = () => {
+    baseline = Object.fromEntries(Object.entries(api.getApps()).map(([name, app]) => [name, app.renders]));
+    notice('Counts reset.');
+    update();
+  };
+  panel.querySelector('#reset-state').onclick = () => {
+    if (window.confirm('Clear this demo basket, favorites, orders and preferences?')) { api.reset(); notice('Demo state reset.'); }
+  };
+  function update() {
+    const apps = api.getApps();
+    const delta = renderDelta(Object.fromEntries(Object.entries(apps).map(([name, app]) => [name, app.renders])), baseline);
+    const body = panel.querySelector('tbody');
+    body.replaceChildren();
+    for (const [name, app] of Object.entries(apps)) {
+      const row = document.createElement('tr');
+      for (const value of [name, app.appliedRevision, app.targetRevision, revisionLag(app.targetRevision, app.appliedRevision), delta[name], app.readyMs === undefined ? 'pending' : `${app.readyMs} ms`]) {
+        const cell = document.createElement('td'); cell.textContent = value; row.append(cell);
+      }
+      body.append(row);
+    }
+    panel.querySelector('pre').textContent = JSON.stringify(api.getState(), null, 2);
+  }
+  return update;
+}
