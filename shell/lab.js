@@ -66,3 +66,33 @@ function statePanel({ api, panels, notice }) {
   }
   return update;
 }
+
+function eventPanel({ api, panels, notice }) {
+  const panel = panels.Events.panel;
+  panel.innerHTML = `<p>Bounded to the latest 160 events. Heartbeats and resize traffic are excluded from this trace.</p><div class="lab-actions"><label>Source<select id="trace-source"><option value="all">All apps</option><option>shell</option><option>react</option><option>vue</option><option>svelte</option><option>qwik</option></select></label><label>Find event<input id="trace-search" placeholder="state, favorite, rejected..." /></label><button id="export-trace">Export JSON</button></div><p class="muted" id="trace-summary"></p><div class="trace-list"></div>`;
+  panel.querySelector('#trace-source').onchange = update;
+  panel.querySelector('#trace-search').oninput = update;
+  panel.querySelector('#export-trace').onclick = () => {
+    const url = URL.createObjectURL(new Blob([exportTrace(api.getTrace(), api.getState())], { type: 'application/json' }));
+    const anchor = document.createElement('a'); anchor.href = url; anchor.download = 'fieldnotes-session.json'; anchor.click();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+    notice('Session trace exported.');
+  };
+  function update() {
+    const rows = api.getTrace();
+    const summary = traceSummary(rows);
+    panel.querySelector('#trace-summary').textContent = `${summary.total} events / ${summary.rejected} rejected / ${summary.snapshots} snapshots / ${summary.renders} render signals`;
+    const list = panel.querySelector('.trace-list');
+    const opened = new Set([...list.querySelectorAll('details[open]')].map(element => element.dataset.key));
+    list.replaceChildren();
+    for (const row of filterTrace(rows, panel.querySelector('#trace-source').value, panel.querySelector('#trace-search').value)) {
+      const item = document.createElement('details');
+      item.dataset.key = `${row.timestamp}:${row.source}:${row.messageId || row.type}:${row.detail}`;
+      item.open = opened.has(item.dataset.key);
+      const title = document.createElement('summary'); title.textContent = `${row.source} / ${row.type}: ${row.detail || ''}`;
+      const data = document.createElement('pre'); data.textContent = JSON.stringify(row, null, 2);
+      item.append(title, data); list.append(item);
+    }
+  }
+  return update;
+}
