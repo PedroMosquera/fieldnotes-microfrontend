@@ -96,3 +96,18 @@ function eventPanel({ api, panels, notice }) {
   }
   return update;
 }
+
+function tokenPanel({ api, panels, notice }) {
+  const panel = panels.Tokens.panel;
+  panel.innerHTML = `<p>Svelte publishes appearance preferences. The shell resolves and distributes the same semantic tokens to each document. CSS itself does not cross iframe boundaries.</p><div class="lab-actions"><button id="css-probe">Set shell-only accent</button><button id="restore-theme">Restore shell theme</button></div><table><thead><tr><th>Token</th><th>Value</th></tr></thead><tbody></tbody></table>`;
+  panel.querySelector('#css-probe').onclick = () => { document.documentElement.style.setProperty('--shop-accent', '#963a24'); notice('Only the shell accent changed. Child frame variables are independent.'); };
+  panel.querySelector('#restore-theme').onclick = () => { api.restoreTheme(); notice('Shell tokens restored from canonical state.'); };
+  return () => {
+    const body = panel.querySelector('tbody'); body.replaceChildren();
+    for (const token of tokenRows(api.getState().tokens)) {
+      const row = document.createElement('tr');
+      for (const value of [token.name, token.value]) { const cell = document.createElement('td'); cell.textContent = value; row.append(cell); }
+      body.append(row);
+    }
+  };
+}
