@@ -111,3 +111,13 @@ function tokenPanel({ api, panels, notice }) {
     }
   };
 }
+
+function architecturePanel({ panels }) {
+  const panel = panels.Architecture.panel;
+  panel.innerHTML = `<p>Each app sends changes to the shell and receives the state it uses.</p><div class="topology"><span>React</span><span>Vue</span><strong>Shell</strong><span>Svelte</span><span>Qwik</span></div><div class="table-scroll"><table><thead><tr><th>Section</th><th>Local ownership</th><th>Publishes</th><th>Subscribes</th></tr></thead><tbody></tbody></table></div><p class="muted">This is a same-origin trusted-code exercise. Frames isolate lifecycle and styling; they are not a security boundary or a guarantee of separate browser threads.</p>`;
+  for (const entry of registry) {
+    const row = document.createElement('tr');
+    for (const value of [entry.name, entry.owns, entry.publishes, entry.consumes]) { const cell = document.createElement('td'); cell.textContent = value; row.append(cell); }
+    panel.querySelector('tbody').append(row);
+  }
+}
