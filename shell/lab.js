@@ -121,3 +121,24 @@ function architecturePanel({ panels }) {
     panel.querySelector('tbody').append(row);
   }
 }
+
+function exercisePanel({ api, panels, notice }) {
+  const panel = panels.Exercises.panel;
+  panel.innerHTML = `<p>Completion is a self-assessment, not an automated test result. Each scenario changes transport settings only; your basket remains available.</p><div class="lab-actions"><button id="normal-transport">Restore normal transport</button><button id="protocol-probe">Probe wrong protocol</button><button id="permission-probe">Probe wrong permission</button></div><div class="exercise-list"></div>`;
+  panel.querySelector('#normal-transport').onclick = () => { api.scenario('normal'); notice('All state delivery restored.'); };
+  panel.querySelector('#protocol-probe').onclick = () => api.probe('protocol');
+  panel.querySelector('#permission-probe').onclick = () => api.probe('permission');
+  for (const exercise of exercises) {
+    const card = document.createElement('details');
+    const title = document.createElement('summary'); title.textContent = exercise.title;
+    const start = document.createElement('button'); start.textContent = 'Start scenario';
+    start.onclick = () => { api.scenario(exercise.setup); notice(`Started: ${exercise.title}`); };
+    const list = document.createElement('ol');
+    exercise.steps.forEach(text => { const item = document.createElement('li'); item.textContent = text; list.append(item); });
+    const expected = document.createElement('p'); expected.textContent = `Expected: ${exercise.expected}`;
+    const label = document.createElement('label');
+    const checkbox = document.createElement('input'); checkbox.type = 'checkbox';
+    label.append(checkbox, ' I observed and can explain this outcome');
+    card.append(title, start, list, expected, label); panel.querySelector('.exercise-list').append(card);
+  }
+}
