@@ -1,5 +1,6 @@
 import '../shared/style.css';
 import './shell.css';
+import { createLab } from './lab.js';
 import { APPS, CHANNEL, authorized, commandKey, createDeduper, trustedSender, projectState, subscriptions } from '../shared/protocol.js';
 import { createStore, reduceShop, initialState, changedSlices, placeOrder, reorder } from '../shared/shop.js';
 import { loadState, saveState, clearSavedState } from '../shared/persistence.js';
@@ -214,3 +215,25 @@ document.querySelector('#toggle-admin').onclick = event => {
   event.currentTarget.setAttribute('aria-expanded', String(!admin.hidden));
   event.currentTarget.textContent = admin.hidden ? 'Show admin panel' : 'Hide admin panel';
 };
+
+lab = createLab({
+  getState: () => store.get(),
+  getApps: () => apps,
+  getTrace: () => trace.list(),
+  restoreTheme: () => applyTokens(document.documentElement, store.get().tokens),
+  reset() {
+    try { clearSavedState(localStorage); } catch { log('shell', 'storage-warning', 'Browser storage is unavailable.'); }
+    store.update({ ...initialState(), revision: store.get().revision + 1 });
+    log('shell', 'reset', 'demo state reset');
+  },
+  scenario(name) {
+    APPS.forEach(app => setFault(app, 'normal'));
+    if (name === 'pause-vue') setFault('vue', 'pause');
+    if (name === 'reorder-vue') setFault('vue', 'reorder');
+    if (name === 'ack-vue') setFault('vue', 'ack-drop');
+  },
+  probe(kind) {
+    if (apps.react.status !== 'healthy') { log('shell', 'probe', 'Restart React before running a contract probe.'); return; }
+    send(apps.react, 'contract-probe', { kind });
+  },
+});
