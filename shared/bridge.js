@@ -57,6 +57,12 @@ function receive(event) {
     return;
   }
   if (data.type === 'duplicate-command') { duplicateNext = true; return; }
+  if (data.type === 'contract-probe') {
+    const probe = envelope(source, 'shipping', { amount: 500 });
+    if (data.kind === 'protocol') probe.version = 999;
+    post(probe);
+    return;
+  }
   if (data.type === 'crash') {
     setTimeout(() => { throw new Error('Simulated microfrontend failure'); });
     return;
