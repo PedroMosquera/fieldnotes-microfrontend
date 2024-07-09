@@ -1,0 +1,38 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import { initialState, reduceShop, totals, placeOrder, reorder, restoreState, createStore, changedSlices, acceptRevision } from '../shared/shop.js';
+
+test('shared shopping workflow preserves ownership and immutable snapshots', () => {
+  const empty = initialState();
+  let state = reduceShop(empty, { type: 'add', id: 'notebook' });
+  assert.equal(state.revision, 1);
+  assert.deepEqual(empty.cart, {});
+  assert.deepEqual(changedSlices(empty, state), ['cart']);
+  state = reduceShop(state, { type: 'coupon', code: 'studio10' });
+  state = reduceShop(state, { type: 'shipping', amount: 500 });
+  assert.deepEqual(totals(state), { subtotal: 1800, discount: 180, delivery: 500, total: 2120 });
+  const ordered = placeOrder(state, 'order-1', 100);
+  assert.deepEqual(ordered.cart, {});
+  assert.equal(ordered.orders[0].total, 2120);
+  assert.equal(ordered.orders[0].cart.notebook, 1);
+  assert.deepEqual(reorder(ordered, 'order-1').cart, { notebook: 1 });
+  assert.equal(reorder(ordered, 'missing'), ordered);
+  for (const id of ['notebook', 'cup', 'lamp', 'pen']) state = reduceShop(state, { type: 'compare', id });
+  assert.equal(state.compared.length, 3);
+  state = reduceShop(state, { type: 'favorite', id: 'cup' });
+  assert.deepEqual(state.favorites, ['cup']);
+  assert.deepEqual(reduceShop(state, { type: 'favorite', id: 'cup' }).favorites, []);
+  assert.equal(acceptRevision(4, 3), false);
+  assert.equal(acceptRevision(4, 4), false);
+  assert.equal(acceptRevision(4, 5), true);
+  const restored = restoreState({ cart: { cup: -3, lamp: 500, evil: 2 }, favorites: ['cup', 'cup', 'evil'], orders: ordered.orders });
+  assert.deepEqual(restored.cart, { lamp: 99 });
+  assert.deepEqual(restored.favorites, ['cup']);
+  assert.deepEqual(restored.orders, []);
+  const store = createStore(state);
+  const projection = store.get(); projection.cart.notebook = 77;
+  assert.equal(store.get().cart.notebook, 1);
+  let calls = 0; const unsubscribe = store.subscribe(() => calls++);
+  store.update(ordered); unsubscribe(); store.update(empty);
+  assert.equal(calls, 1);
+});
