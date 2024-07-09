@@ -32,6 +32,21 @@ iframe { border: 0; width: 100%; display: block; }
 @media(max-width:850px) { .page-layout { grid-template-columns: 1fr; }.admin { border-left: 0; border-top: 1px solid #dfe6e1; }#app-controls { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }.store { padding: 28px 24px 0; } }
 @media(max-width:520px) { .checkout-column { display: block; }#app-controls { display: block; }.store { padding-left: 18px; padding-right: 18px; }.brand { font-size: 1.4rem; }.site-header { padding: 16px; }#toggle-admin { font-size: .75rem; padding: 9px; } }
 
+.brand { color: var(--shop-accent); }
+.training { border-top: 1px solid #dfe6e1; padding: 28px 0; margin-bottom: 24px; }
+.lab-tabs { display: flex; flex-wrap: wrap; gap: 8px; margin: 18px 0; }
+.lab-tabs button { font-size: .875rem; }.lab-tabs button[aria-pressed="true"] { background: var(--shop-accent); color: white; }
+.lab-panels>section { min-width: 0; }.lab-panels p { font-size: .875rem; }
+.lab-actions { display: flex; gap: 12px; flex-wrap: wrap; align-items: end; margin: 18px 0; }.lab-actions button { font-size: .875rem; }.lab-actions label { display: grid; gap: 6px; font-size: .875rem; }
+.table-scroll { overflow-x: auto; }
+pre { white-space: pre-wrap; overflow-wrap: anywhere; background: #eef2ef; padding: 16px; border-radius: 6px; max-height: 340px; overflow: auto; font-size: .8125rem; line-height: 1.5; }
+.trace-list { max-height: 480px; overflow: auto; }.trace-list details { border-bottom: 1px solid #dce3df; padding: 0 8px; }.trace-list summary { overflow-wrap: anywhere; }
+.topology { display: grid; grid-template-columns: repeat(2,1fr); text-align: center; gap: 12px; margin: 20px 0; }.topology span { background: var(--shop-soft); border: 1px solid #dce3df; padding: 14px; border-radius: 6px; }.topology strong { grid-column: 1 / -1; background: var(--shop-accent); color: white; padding: 18px; border-radius: 6px; }
+.exercise-list { display: grid; gap: 12px; }.exercise-list details { border: 1px solid #dce3df; padding: 0 16px 16px; border-radius: 6px; }.exercise-list li { margin: 10px 0; line-height: 1.5; font-size: .875rem; }.exercise-list label { font-size: .875rem; }
+.app-control details { margin-top: 10px; }.app-control details label { display: grid; gap: 8px; font-size: .75rem; }.app-control details select { width: 100%; font-size: .75rem; }.app-control details button { margin-top: 10px; font-size: .75rem; }
+#lab-notice { color: var(--shop-accent); }
+@media(max-width:520px) { .training .island-heading { align-items: start; flex-direction: column; }.lab-actions>label { width: 100%; }.lab-tabs { gap: 5px; }.lab-tabs button { padding: 8px; }.training table { font-size: .8125rem; } }
+
 .island[data-app] { position: relative; border: 2px solid var(--framework-color); border-radius: 6px; padding: 18px; }
 [data-app="react"] { --framework-color: #087ea4; --framework-glow: #61dafb66; }
 [data-app="vue"] { --framework-color: #28865a; --framework-glow: #42b88366; }
