@@ -1,0 +1,31 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import { envelope, validEnvelope, authorized, createDeduper, trustedSender, projectState, commandKey } from '../shared/protocol.js';
+import { initialState } from '../shared/shop.js';
+
+test('protocol validates payload identity capabilities and bounded deduplication', () => {
+  const message = envelope('react', 'add', { id: 'cup', version: 999, source: 'vue' }, 'command-1');
+  assert.equal(validEnvelope(message), true);
+  assert.equal(message.source, 'react');
+  assert.equal(validEnvelope({ ...message, version: 1 }), false);
+  assert.equal(validEnvelope({ ...message, id: 12 }), false);
+  assert.equal(authorized('react', 'shipping'), false);
+  assert.equal(authorized('svelte', 'shipping'), true);
+  const frame = {};
+  const event = { source: frame, origin: 'http://local', data: message };
+  assert.equal(trustedSender(event, frame, 'http://local', 'react'), true);
+  assert.equal(trustedSender(event, {}, 'http://local', 'react'), false);
+  assert.equal(trustedSender(event, frame, 'http://other', 'react'), false);
+  assert.equal(trustedSender(event, frame, 'http://local', 'vue'), false);
+  const deduper = createDeduper(2);
+  assert.equal(deduper.accept(commandKey(message)), true);
+  assert.equal(deduper.accept(commandKey(message)), false);
+  deduper.accept('second'); deduper.accept('third');
+  assert.equal(deduper.accept(commandKey(message)), true);
+  const state = initialState();
+  const vue = projectState(state, 'vue');
+  assert.equal('viewed' in vue, false);
+  assert.equal('orders' in vue, true);
+  vue.cart.cup = 1;
+  assert.deepEqual(state.cart, {});
+});
