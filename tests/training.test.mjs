@@ -1,0 +1,32 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import { products } from '../shared/catalog.js';
+import { filterProducts, sortProducts, comparedProducts, recommend } from '../shared/catalog-tools.js';
+import { resolveTokens, applyTokens, tokenRows } from '../shared/tokens.js';
+import { createTrace, filterTrace, traceSummary, revisionLag, renderDelta, exportTrace, readyDuration } from '../shared/telemetry.js';
+
+test('training projections preserve tokens catalog inputs and bounded evidence', () => {
+  assert.equal(filterProducts(products, { query: ' NOTEBOOK ' })[0].id, 'notebook');
+  assert.equal(sortProducts(products, 'price-low')[0].id, 'pen');
+  assert.equal(products[0].id, 'notebook');
+  assert.deepEqual(comparedProducts(products, ['cup', 'missing']).map(item => item.id), ['cup']);
+  assert.equal(recommend(products, ['lamp'], { lamp: 1 })[0].id, 'cup');
+  const applied = new Map(); const element = { style: { setProperty: (key, value) => applied.set(key, value) }, dataset: {} };
+  applyTokens(element, { theme: 'ocean', density: 'compact' });
+  assert.equal(applied.get('--shop-accent'), '#24577a');
+  assert.equal(applied.get('--shop-gap'), '12px');
+  assert.equal(resolveTokens({ theme: 'invalid' }).accent, '#244b3f');
+  assert.equal(tokenRows({}).length, 9);
+  const trace = createTrace(2);
+  trace.add({ source: 'react', type: 'render' });
+  trace.add({ source: 'vue', type: 'rejected' });
+  trace.add({ source: 'shell', type: 'state' });
+  assert.equal(trace.list().length, 2);
+  assert.equal(filterTrace(trace.list(), 'vue', 'reject').length, 1);
+  assert.equal(traceSummary(trace.list()).rejected, 1);
+  assert.equal(revisionLag(8, 5), 3);
+  assert.deepEqual(renderDelta({ react: 3 }, { react: 9 }), { react: 0 });
+  assert.equal(JSON.parse(exportTrace(trace.list(), { revision: 2 })).schema, 1);
+  assert.equal(readyDuration(10, 35.6), 26);
+  trace.clear(); assert.deepEqual(trace.list(), []);
+});
