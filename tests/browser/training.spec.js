@@ -22,6 +22,7 @@ test('Svelte propagates theme tokens to all framework roots', async ({ page }) =
 test('paused basket catches up when transport resumes', async ({ page }) => {
   const basket = page.frameLocator('iframe[title="Shopping basket"]');
   await expect(basket.locator('.grand strong')).toHaveText('€0.00');
+  await page.locator('[data-control="vue"] summary').click();
   await page.getByLabel('vue state delivery', { exact: true }).selectOption('pause');
   await page.frameLocator('iframe[title="Product catalog"]').getByRole('button', { name: 'Add to basket' }).first().click();
   await expect(page.locator('#lab-state pre')).toContainText('"notebook": 1');
