@@ -1,12 +1,12 @@
 # Fieldnotes Microfrontend
 
-A small stationery shop and a microfrontend failure lab. React renders the collection, Vue manages the basket view, Svelte offers delivery choices, and Qwik rotates recommendations. A plain JavaScript shell composes the sections and provides the control room.
+A stationery shop and hands-on microfrontend training lab using React 18, Vue 3, Svelte 4 and Qwik 1. The shell composes independent iframe builds, owns shared state, validates commands and exposes transport failures. Products and orders are mocked locally; no account, payment service or backend is needed.
 
-This is a reconstructed March to July 2024 practice project. Historical commit dates are an exercise schedule, not evidence that this code was written in 2024. The dependency cutoff is March 25, 2024. No remote repository or deployment is required.
+The history is a reconstructed learning exercise, not evidence that this code was authored on its commit timestamps. The frontend dependency cutoff is March 25, 2024. The prepared history has 104 source and tooling milestones through July 2024, then a separate Node security update on November 11, 2026: 105 commits in total. No commits have actually been created in this restricted workspace.
 
 ## Run locally
 
-Use Node 20.11.1 (see `.nvmrc`) and its bundled npm for this historical milestone. With network access:
+Use Node 20.11.1 from `.nvmrc` and its bundled npm at this historical milestone. The reconstructed November 2026 maintenance commit updates the runtime separately.
 
 ```sh
 nvm install
@@ -16,25 +16,35 @@ npm run check:dates
 npm run dev
 ```
 
-Open `http://127.0.0.1:5100`. The shell proxies four development servers on ports 5101 through 5104. Stop the process with Ctrl+C. Products are local fixtures and orders are simulated. No backend, account or payment service is used.
+Open `http://127.0.0.1:5100`. The shell proxies four development servers on ports 5101 through 5104. Stop all five processes with Ctrl+C. Installation and browser execution remain blocked in the provided session; see [verification status](docs/verification.md).
 
-The repository's `.npmrc` limits resolution to packages published before the cutoff, including transitive dependencies. The first install must generate `package-lock.json`; retain that file and use `npm ci` for subsequent installs. `check:dates` checks every locked package against npm publication timestamps and writes `docs/package-dates.json`. Until that succeeds, full historical dependency compatibility remains unverified.
+The `.npmrc` cutoff applies to direct and transitive dependencies. The first successful install must produce `package-lock.json`; retain it and use `npm ci` subsequently. `check:dates` verifies every locked package's publication timestamp and writes `docs/package-dates.json`. This date constraint is for the historical exercise, not a claim that those old packages are currently secure.
 
-## Try the failure lab
+## Use the shop
 
-1. Add a product to the basket. Change its quantity or delivery option.
-2. In the control room, press **Render** to trigger a local state update and watch the counter.
-3. Press **Fail app** for any framework. Its iframe throws an uncaught error, reports it, and is replaced with a fallback. The other sections remain mounted.
-4. Add another item using a surviving catalog or recommendation card. Restart the basket to see the latest shell state.
-5. Press **Restart** or **Restart all**. Shared cart and delivery state survive. Search, recommendation selection, and render counters reset.
-6. Place a demo order. The basket clears and a confirmation explains that nothing was charged.
+React provides search, categories, sorting, favorites, product details and comparison. Qwik recommendations react to browsing activity and basket contents. Both sections publish favorite and add-to-basket commands. Vue handles quantities, the `STUDIO10` demo coupon, checkout, order history and reorder. Svelte controls delivery, theme and spacing. Its appearance commands update semantic CSS variables in every framework document.
 
-Counters represent instrumented component commits or reactive updates, not every internal render, browser paint, CPU time or comparable framework benchmarks. The activity list keeps the most recent 40 events. Full page reloads reset all state.
+Basket, favorites, comparisons, recent browsing, delivery, coupon and appearance persist in validated local storage. Orders and diagnostic traces stay in memory. Local search, sort and recommendation position belong to each section and reset when that section restarts.
+
+## Use the training lab
+
+The admin panel provides independent failure/restart controls, render signals and expandable transport faults. Delay, drop, duplicate, reorder or pause state delivery; separately drop acknowledgements to observe retries. Inject an actual uncaught error in a selected frame while the other sections keep running.
+
+Below the shop, explore:
+
+- State: canonical JSON, applied and target revisions, lag, render baselines and ready timing.
+- Events: bounded structured traces with payloads, source filters and JSON export.
+- Tokens: semantic variable values and a parent-only CSS probe.
+- Architecture: each section's local ownership, publishers and subscriptions.
+- Exercises: ten scenarios with setup actions, observation steps and expected outcomes.
+
+Start with [training sessions](docs/training.md), then read [communication contracts](docs/communication.md). Completion checkboxes are self-assessments. Render signals use different framework lifecycle hooks and cannot rank framework performance.
 
 ## Verify
 
 ```sh
 node scripts/check-test-sensitivity.mjs
+node scripts/check-training-sensitivity.mjs
 npm test
 npm run build
 npx playwright install chromium
@@ -42,17 +52,18 @@ npm run test:e2e
 npm run preview
 ```
 
-The sensitivity check deliberately introduces nine temporary faults into the state module and requires assertion failures, then restores the original file. Do not run it concurrently with editing that module. Browser tests target production builds and cover checkout, all four failure/recovery paths, Qwik interactions, and mobile overflow. They have not yet been executed successfully in this workspace; see [verification](docs/verification.md).
+The sensitivity scripts temporarily break invariants, require assertion failures, and restore source in `finally` blocks. Do not edit those modules concurrently. The 12 unit tests have passed after 15 observed mutation failures. Browser tests are written but have not been run successfully or validated with failing assertions in this environment.
 
-## Local Git history
-
-The supplied history script creates ten commits with both author and committer dates from March 25 through July 25, 2024, followed by a Node security update on November 11, 2026 at 23:42 Europe/Madrid. Weekday commits are at night; four irregularly spaced weekend commits are during the day. The 2024 dependency commit stages Node 20.11.1 and its original engine constraint; the final commit updates the pin and manifest/lockfile engine constraints. It uses your configured Git identity, refuses an existing repository, runs checks first, and never pushes or rewrites history. See [Node security update](docs/node-security.md).
+## Reconstruct the local Git history
 
 ```sh
 node scripts/create-history.mjs --preview
+node scripts/create-history.mjs --verify
 node scripts/create-history.mjs
 ```
 
-This script has not been executed here because the session cannot write `.git` or download the packages needed for its verification gates. It groups the source into setup, individual framework sections, composition, tests and documentation. Early commits are incremental source milestones, not independently runnable full applications. If a commit fails partway through, inspect and continue manually; the script deliberately refuses to overwrite that partial repository.
+The script replays the source snapshots in `.practice/steps` into the Git index without overwriting working files. Every source milestone changes content; no empty commits are requested. Dates are deterministic, chronological and use Madrid offsets. Weekday sessions are at night, with irregular weekend sessions. The final security commit is dated November 11, 2026 at 23:42 Madrid time.
 
-See [architecture](docs/architecture.md), [historical reading](docs/references.md), and [verification status](docs/verification.md).
+Creation refuses an existing repository, uses your configured Git identity, and requires dependency-date, mutation, unit, build and browser checks first. It never pushes or rewrites history. If a commit fails partway through, inspect the partial repository and continue manually. Intermediate snapshots show incremental development and are not claimed to be independently buildable releases.
+
+See [history format](docs/history.md), [architecture](docs/architecture.md), [historical reading](docs/references.md), and [Node update](docs/node-security.md).
