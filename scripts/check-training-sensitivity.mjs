@@ -2,6 +2,7 @@ import { readFileSync, writeFileSync } from 'node:fs';
 import { spawnSync } from 'node:child_process';
 
 const mutations = [
+  ['acknowledgement correlation', 'shared/bridge.js', 'tests/bridge.test.mjs', 'if (!entry) return;\n    clearTimeout(entry.timer);', 'if (entry) clearTimeout(entry.timer);'],
   ['discount arithmetic', 'shared/shop.js', 'tests/shop.test.mjs', 'Math.round(subtotal / 10)', 'Math.round(subtotal / 5)'],
   ['capability enforcement', 'shared/protocol.js', 'tests/protocol.test.mjs', 'capabilities[source].includes(type)', 'true'],
   ['storage data minimization', 'shared/persistence.js', 'tests/persistence.test.mjs', 'state: { cart, shipping, favorites', 'state: { orders: state.orders, cart, shipping, favorites'],

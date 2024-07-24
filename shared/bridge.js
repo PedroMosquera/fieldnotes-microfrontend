@@ -51,7 +51,8 @@ function receive(event) {
   if (event.origin !== location.origin || event.source !== parent || data?.channel !== CHANNEL || data.version !== 2) return;
   if (data.type === 'ack') {
     const entry = pending.get(data.replyTo);
-    if (entry) clearTimeout(entry.timer);
+    if (!entry) return;
+    clearTimeout(entry.timer);
     pending.delete(data.replyTo);
     if (data.error) listeners.forEach(callback => callback({ type: 'notice', message: data.error }));
     return;
