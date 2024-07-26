@@ -2,7 +2,7 @@
 
 A stationery shop and hands-on microfrontend training lab using React 18, Vue 3, Svelte 4 and Qwik 1. The shell composes independent iframe builds, owns shared state, validates commands and exposes transport failures. Products and orders are mocked locally; no account, payment service or backend is needed.
 
-The history is a reconstructed learning exercise, not evidence that this code was authored on its commit timestamps. The frontend dependency cutoff is March 25, 2024. The prepared history has 104 source and tooling milestones through July 2024, then a separate Node security update on November 11, 2026: 105 commits in total. No commits have actually been created in this restricted workspace.
+The history is a reconstructed learning exercise, not evidence that this code was authored on its commit timestamps. The frontend dependency cutoff is March 25, 2024. The prepared history has 107 source and tooling milestones through July 2024, then a separate Node security update on November 11, 2026: 108 commits in total. No commits have actually been created in this restricted workspace.
 
 ## Run locally
 
@@ -16,7 +16,7 @@ npm run check:dates
 npm run dev
 ```
 
-Open `http://127.0.0.1:5100`. The shell proxies four development servers on ports 5101 through 5104. Stop all five processes with Ctrl+C. Installation and browser execution remain blocked in the provided session; see [verification status](docs/verification.md).
+Open `http://127.0.0.1:5100`. The shell proxies four development servers on ports 5101 through 5104. Stop all five processes with Ctrl+C. The production build and unit tests pass in this session. Browser verification remains incomplete; see [verification status](docs/verification.md).
 
 The `.npmrc` cutoff applies to direct and transitive dependencies. The first successful install must produce `package-lock.json`; retain it and use `npm ci` subsequently. `check:dates` verifies every locked package's publication timestamp and writes `docs/package-dates.json`. This date constraint is for the historical exercise, not a claim that those old packages are currently secure.
 
@@ -52,7 +52,7 @@ npm run test:e2e
 npm run preview
 ```
 
-The sensitivity scripts temporarily break invariants, require assertion failures, and restore source in `finally` blocks. Do not edit those modules concurrently. The 12 unit tests have passed after 15 observed mutation failures. Browser tests are written but have not been run successfully or validated with failing assertions in this environment.
+The sensitivity scripts temporarily break invariants, require assertion failures, and restore source in `finally` blocks. Do not edit those modules concurrently. The 13 unit tests have passed after 16 observed mutation failures. Browser tests are written but have not been run successfully or validated with failing assertions in this environment.
 
 ## Reconstruct the local Git history
 
