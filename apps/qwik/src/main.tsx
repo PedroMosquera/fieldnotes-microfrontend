@@ -23,7 +23,7 @@ export const Recommendation = component$(() => {
       if (message.type === 'notice') notice.value = message.message;
     }));
     send('ready');
-  });
+  }, { strategy: 'document-ready' });
   useVisibleTask$(({ track }) => {
     track(() => index.value);
     track(() => pulse.value);
@@ -31,7 +31,7 @@ export const Recommendation = component$(() => {
     track(() => favorites.value);
     track(() => cart.value);
     rendered();
-  });
+  }, { strategy: 'document-ready' });
   const ranked = recommend(products, viewed.value, cart.value);
   const product = ranked[index.value % ranked.length];
   return <main data-pulse={pulse.value}>
