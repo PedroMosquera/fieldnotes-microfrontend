@@ -1,4 +1,4 @@
-import { readFile, writeFile } from 'node:fs/promises';
+import { readFile } from 'node:fs/promises';
 
 const cutoff = '2024-03-25T20:00:00.000Z';
 const lock = JSON.parse(await readFile('package-lock.json', 'utf8'));
@@ -16,5 +16,4 @@ for (const [path, entry] of Object.entries(lock.packages)) {
   if (!published || Date.parse(published) > Date.parse(cutoff)) throw new Error(`${name}@${entry.version} is outside cutoff: ${published}`);
   report.push({ name, version: entry.version, published });
 }
-await writeFile('docs/package-dates.json', JSON.stringify({ cutoff, packages: report }, null, 2) + '\n');
 console.log(`Verified ${report.length} locked package versions against npm publication dates.`);
